@@ -8,14 +8,27 @@ import { CourseService } from './course.service';
 })
 
 export class CourseListComponent implements OnInit{
-        courses: Course[] = [];
+    filteredCourses: Course[] = [];
+    _courses: Course[] = [];
+    _filterBy: string;
 
-        constructor(private courseService: CourseService){}
+    constructor(private courseService: CourseService){}
 
-        // Método ngOnInit diz respeito ao ciclo de vida do componente.
-        ngOnInit(): void{
-            this.courses = this.courseService.retrieveAll();
+    // Método ngOnInit diz respeito ao ciclo de vida do componente.
+    ngOnInit(): void{
+        this._courses = this.courseService.retrieveAll();
 
+        this.filteredCourses = this._courses;
         }
 
-}
+        set filter(value: string) {
+        this._filterBy = value;
+        // tslint:disable-next-line:max-line-length
+        this.filteredCourses = this._courses.filter((course: Course) => course.name.toLocaleLowerCase().indexOf(this._filterBy.toLocaleLowerCase()) > -1);
+        }
+
+        get filter(){
+            return this._filterBy;
+        }
+
+ }
