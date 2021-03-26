@@ -1,5 +1,7 @@
 
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Course } from './course';
 
 @Injectable({
@@ -8,8 +10,15 @@ import { Course } from './course';
 
 export class CourseService {
 
-    retrieveAll(): Course[] {
-        return COURSES;
+    // tslint:disable-next-line:no-inferrable-types
+    private courseUrl: string = 'http://localhost:3100/api/courses';
+
+    constructor(private httpClient: HttpClient) {}
+
+   /* O padrão de retorno de um httpclient é um observable ('envelopa' a resposta).
+   a requisição de um observable só é realizada com o subscribe.*/
+    retrieveAll(): Observable<Course[]> {
+        return this.httpClient.get<Course[]>(this.courseUrl);
     }
 
     retrieveById(id: number): Course {
