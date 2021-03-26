@@ -13,10 +13,18 @@ export class CourseInfoComponent implements OnInit {
     constructor(private activatedRoute: ActivatedRoute, private courseService: CourseService) {} // injeção de dependência
 
     ngOnInit(): void {
-        this.course = this.courseService.retrieveById(+this.activatedRoute.snapshot.paramMap.get('id'));
+        // tslint:disable-next-line: deprecation
+        this.courseService.retrieveById(+this.activatedRoute.snapshot.paramMap.get('id')).subscribe({
+            next: course => this.course = course,
+            error: err => console.log('Error', err)
+        });
     }
 
     save(): void{
-        this.courseService.save(this.course);
+        // tslint:disable-next-line: deprecation
+        this.courseService.save(this.course).subscribe({
+            next: course => console.log('Saved with success', course),
+            error: err => console.log('Error', err)
+        });
     }
 }
