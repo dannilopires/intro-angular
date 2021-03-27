@@ -29,6 +29,17 @@ export class CourseListComponent implements OnInit{
         });
     }
 
+    deleteById(courseId: number): void{
+        // tslint:disable-next-line: deprecation
+        this.courseService.deleteById(courseId).subscribe({
+            next: () => {
+                console.log('Delete with success');
+                this.retrieveAll();
+            },
+            error: err => console.log('Error', err)
+        });
+    }
+
         set filter(value: string) {
         this._filterBy = value;
         // tslint:disable-next-line:max-line-length
